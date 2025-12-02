@@ -7,14 +7,18 @@ import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
 import { AuthModule } from './auth/auth.module';
+import { UrlService } from './url/url.service';
+import { UrlController } from './url/url.controller';
+import { UrlModule } from './url/url.module';
 
 @Module({
   imports: [
     UserModule,
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     AuthModule,
+    UrlModule,
   ],
-  controllers: [AppController, UserController],
-  providers: [AppService, PrismaService, UserService, UserService],
+  controllers: [AppController, UserController, UrlController],
+  providers: [AppService, PrismaService, UserService, UserService, UrlService],
 })
 export class AppModule {}

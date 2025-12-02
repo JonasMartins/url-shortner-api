@@ -5,12 +5,11 @@ import {
   NotFoundException,
   Post,
   UnauthorizedException,
-  UseGuards,
 } from '@nestjs/common';
+import { Public } from '../common/decorators/public.decorator';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { LoginDTO } from './dto/auth.dto';
-import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -19,6 +18,7 @@ export class AuthController {
     private authService: AuthService,
   ) {}
 
+  @Public()
   @Post('login')
   async login(@Body() body: LoginDTO) {
     const validation = await this.authService.validateUser(body);
@@ -31,7 +31,6 @@ export class AuthController {
     throw new UnauthorizedException('Invalid credentials');
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
   profile() {
     return 'protected route';

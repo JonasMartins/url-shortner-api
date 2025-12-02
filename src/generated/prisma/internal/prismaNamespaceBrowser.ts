@@ -87,7 +87,8 @@ export const UrlScalarFieldEnum = {
   shortCode: 'shortCode',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  userId: 'userId'
+  userId: 'userId',
+  enabled: 'enabled'
 } as const
 
 export type UrlScalarFieldEnum = (typeof UrlScalarFieldEnum)[keyof typeof UrlScalarFieldEnum]
