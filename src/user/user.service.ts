@@ -8,11 +8,14 @@ import { PrismaService } from '../prisma/prisma.service';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async user(userWhereUniqueInput: Prisma.UserWhereUniqueInput) {
+  async user(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
+    returnPass?: boolean,
+  ) {
     return this.prisma.user.findUnique({
       where: userWhereUniqueInput,
       omit: {
-        password: true,
+        password: !returnPass,
       },
     });
   }
@@ -31,5 +34,9 @@ export class UserService {
   async generateHash(password: string, saltOrRounds: number): Promise<string> {
     const hash = await bcrypt.hash(password, saltOrRounds);
     return hash;
+  }
+
+  async validateHash(password: string, hash: string): Promise<boolean> {
+    return await bcrypt.compare(password, hash);
   }
 }

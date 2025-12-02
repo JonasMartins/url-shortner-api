@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsEmail, IsInt, IsOptional, IsString, Min } from 'class-validator';
 
-export class CreateUserDto {
+export class CreateUserDTO {
   @Type(() => String)
   @IsEmail()
   email: string;
@@ -21,7 +21,7 @@ export class UpdateUserDto {
   name?: string | null;
 }
 
-export class PaginationQueryDto {
+export class PaginationQueryDTO {
   @IsOptional()
   @Type(() => Number)
   @IsInt({ message: 'page must be an integer' })
