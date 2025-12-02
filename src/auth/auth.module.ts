@@ -27,6 +27,7 @@ import { LocalStrategy } from './local.strategy';
       signOptions: { expiresIn: '60m' },
     }),
   ],
+  exports: [AuthService],
   controllers: [AuthController],
 })
 export class AuthModule {}
