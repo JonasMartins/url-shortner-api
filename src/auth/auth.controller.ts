@@ -1,22 +1,17 @@
 import {
   Body,
   Controller,
-  Get,
   NotFoundException,
   Post,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Public } from '../common/decorators/public.decorator';
-import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { LoginDTO } from './dto/auth.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private userService: UserService,
-    private authService: AuthService,
-  ) {}
+  constructor(private authService: AuthService) {}
 
   @Public()
   @Post('login')
@@ -29,10 +24,5 @@ export class AuthController {
       throw new NotFoundException('User not found');
     }
     throw new UnauthorizedException('Invalid credentials');
-  }
-
-  @Get('profile')
-  profile() {
-    return 'protected route';
   }
 }

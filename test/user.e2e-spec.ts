@@ -1,8 +1,8 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
+import { AppModule } from '../src/app.module';
 import { generateRandomString } from '../src/common/utils/general.utils';
-import { AppModule } from './../src/app.module';
 // import { PrismaService } from './../src/prisma/prisma.service';
 
 describe('User (e2e) - POST /user', () => {

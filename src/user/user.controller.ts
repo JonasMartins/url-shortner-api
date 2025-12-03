@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { Public } from '../common/decorators/public.decorator';
 import { User as UserModel } from '../generated/prisma/client';
 import { CreateUserDTO } from './dto/user.dto';
@@ -12,10 +12,5 @@ export class UserController {
   @Post()
   async create(@Body() data: CreateUserDTO): Promise<UserModel> {
     return this.userService.createUser(data);
-  }
-
-  @Get()
-  async findByEmail(@Query('email') email: string) {
-    return this.userService.user({ email }, false);
   }
 }
