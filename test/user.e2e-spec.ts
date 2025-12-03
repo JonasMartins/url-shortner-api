@@ -1,6 +1,7 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
+import { generateRandomString } from '../src/common/utils/general.utils';
 import { AppModule } from './../src/app.module';
 // import { PrismaService } from './../src/prisma/prisma.service';
 
@@ -14,7 +15,6 @@ describe('User (e2e) - POST /user', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    // Mirror common production best-practices for validation in tests
     app.useGlobalPipes(
       new ValidationPipe({
         whitelist: true,
@@ -36,9 +36,11 @@ describe('User (e2e) - POST /user', () => {
     // await prisma.user.deleteMany();
   });
 
-  it('creates a user successfully (201)', async () => {
+  it('cria um usuário corretamente (201)', async () => {
+    const random = generateRandomString(5);
+
     const payload = {
-      email: 'alice@example.com',
+      email: `alice-${random}@example.com`,
       name: 'Alice',
       password: 'strongpassword',
     };
@@ -50,13 +52,13 @@ describe('User (e2e) - POST /user', () => {
 
     expect(res.body).toHaveProperty('id');
     expect(res.body.email).toBe(payload.email);
-    // o `name` pode ser retornado como string ou null conforme o model
     expect(res.body).toHaveProperty('name');
   });
 
-  it('creates a user with null name (201)', async () => {
+  it('cria usuário com nome nulo (201)', async () => {
+    const random = generateRandomString(5);
     const payload = {
-      email: 'bob@example.com',
+      email: `bob-${random}@example.com`,
       name: null,
       password: 'anotherstrong',
     };
@@ -70,7 +72,7 @@ describe('User (e2e) - POST /user', () => {
     expect(res.body.name).toBeNull();
   });
 
-  it('returns 400 when email is missing', async () => {
+  it('retorna 400 quando email ausente', async () => {
     const payload = {
       password: 'password123',
     };
@@ -80,12 +82,11 @@ describe('User (e2e) - POST /user', () => {
       .send(payload)
       .expect(400);
 
-    // Mensagem de validação deve existir e listar os problemas
     expect(Array.isArray(res.body.message)).toBe(true);
     expect(res.body.message.length).toBeGreaterThan(0);
   });
 
-  it('returns 400 when email is invalid', async () => {
+  it('retorna 400 para email inválido', async () => {
     const payload = {
       email: 'not-an-email',
       password: 'password123',
@@ -96,13 +97,12 @@ describe('User (e2e) - POST /user', () => {
       .send(payload)
       .expect(400);
 
-    // Deve conter mensagem relacionada ao campo email
     expect(Array.isArray(res.body.message)).toBe(true);
     const joined = (res.body.message as string[]).join(' ');
     expect(/email/i.test(joined)).toBe(true);
   });
 
-  it('returns 400 when password is missing', async () => {
+  it('retorna 400 quando password ausente', async () => {
     const payload = {
       email: 'carol@example.com',
     };
