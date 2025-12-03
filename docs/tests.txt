@@ -1,0 +1,3 @@
+run a specific test:
+
+npm run test:e2e -- --runTestsByPath test/delete-my-urls.e2e-spec.ts

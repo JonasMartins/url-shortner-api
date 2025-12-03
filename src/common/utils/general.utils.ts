@@ -1,6 +1,6 @@
 export function generateRandomString(
   length: number = 5,
-  chars: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+  chars: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-',
 ): string {
   let result = '';
   const charsLength = chars.length;
