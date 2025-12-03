@@ -5,6 +5,8 @@
 Para a autenticação do sistema, foi usada a configuração recomendada pelo NestJS,
 usando guards e JWT strategy junto com Passport uma lib bastante popular.
 
+source: [NestJS](https://docs.nestjs.com/recipes/passport#passport-authentication)
+
 ```ts
 //src/auth/jwt-auth.guard.ts
 @Injectable()
