@@ -10,7 +10,7 @@ export const CurrentUser = createParamDecorator(
     return ctx.switchToHttp().getRequest().user as UserJWTPayload | undefined;
   },
 );
-// Non-nullable: throws UnauthorizedException if user missing
+
 export const AuthUser = createParamDecorator(
   (_data: unknown, ctx: ExecutionContext): UserJWTPayload => {
     const req = ctx.switchToHttp().getRequest();
