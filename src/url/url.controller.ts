@@ -8,15 +8,24 @@ import {
   Post,
   Put,
   Query,
+  Res,
 } from '@nestjs/common';
 import { UserJWTPayload } from 'src/common/types/general.type';
 import { AuthUser } from '../common/decorators/current-user.decorator';
+import { Public } from '../common/decorators/public.decorator';
 import { ShortenDTO, UpdateShortenDTO } from './dto/url.dto';
 import { UrlService } from './url.service';
 
 @Controller()
 export class UrlController {
   constructor(private urlService: UrlService) {}
+
+  @Public()
+  @Get(':shortCode')
+  async short(@Param('shortCode') shortCode: string, @Res() res) {
+    const url = await this.urlService.getByShortCode(shortCode);
+    return res.status(302).redirect(url);
+  }
 
   @Get('my-urls')
   async myUrls(

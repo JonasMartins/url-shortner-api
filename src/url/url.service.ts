@@ -44,7 +44,7 @@ export class UrlService {
       throw new InternalServerErrorException('Erro ao atualizar slug');
     }
 
-    return { shortUrl: newSlug };
+    return { shortUrl: `${process.env.ROOT_URL}/${newSlug}` };
   }
 
   async deleteUrl(shortCode: string, userId: number) {
@@ -66,7 +66,24 @@ export class UrlService {
       data: { deletedAt: new Date() },
     });
 
-    return { shortUrl: shortCode };
+    return { shortUrl: `${process.env.ROOT_URL}/${shortCode}` };
+  }
+
+  async getByShortCode(shortCode: string) {
+    const result = await this.prisma.url.findUnique({
+      where: { shortCode, deletedAt: null },
+      select: { originalUrl: true },
+    });
+    if (!result) {
+      throw new NotFoundException('Link não encontrado');
+    }
+
+    await this.prisma.url.update({
+      where: { shortCode },
+      data: { accessCount: { increment: 1 } },
+    });
+
+    return result.originalUrl;
   }
 
   async myUrls(
@@ -137,7 +154,8 @@ export class UrlService {
     if (!result.id) {
       throw new InternalServerErrorException('Failed to shorten URL');
     }
-    return { shortUrl: shortCode };
+
+    return { shortUrl: `${process.env.ROOT_URL}/${shortCode}` };
   }
 
   /**
