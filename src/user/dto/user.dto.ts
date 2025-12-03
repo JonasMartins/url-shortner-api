@@ -1,5 +1,12 @@
 import { Type } from 'class-transformer';
-import { IsEmail, IsInt, IsOptional, IsString, Min } from 'class-validator';
+import {
+  IsEmail,
+  IsInt,
+  IsOptional,
+  IsString,
+  Min,
+  MinLength,
+} from 'class-validator';
 
 export class CreateUserDTO {
   @Type(() => String)
@@ -12,7 +19,7 @@ export class CreateUserDTO {
 
   @IsString()
   @Type(() => String)
-  @Min(4, { message: 'password must be at least 6 characters long' })
+  @MinLength(4, { message: 'password must be at least 4 characters long' })
   password: string;
 }
 

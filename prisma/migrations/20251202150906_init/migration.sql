@@ -28,3 +28,7 @@ CREATE UNIQUE INDEX "urls_short_code_key" ON "urls"("short_code");
 
 -- AddForeignKey
 ALTER TABLE "urls" ADD CONSTRAINT "urls_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+
+-- insert initial user
+insert into users (name, email, password) values ('Admin', 'admin@email.com', '$2b$10$qI3Y9wJTw31kbS0UNIOb.uYVrW3DaiPFphjyPOH97bVGpRDcuRZ/W')

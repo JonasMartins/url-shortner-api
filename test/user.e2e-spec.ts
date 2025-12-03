@@ -2,11 +2,11 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
-import { PrismaService } from './../src/prisma/prisma.service';
+// import { PrismaService } from './../src/prisma/prisma.service';
 
 describe('User (e2e) - POST /user', () => {
   let app: INestApplication;
-  let prisma: PrismaService;
+  // let prisma: PrismaService;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -24,7 +24,7 @@ describe('User (e2e) - POST /user', () => {
     );
 
     await app.init();
-    prisma = moduleFixture.get<PrismaService>(PrismaService);
+    // prisma = moduleFixture.get<PrismaService>(PrismaService);
   });
 
   afterAll(async () => {
@@ -33,7 +33,7 @@ describe('User (e2e) - POST /user', () => {
 
   beforeEach(async () => {
     // limpa os usuários entre os testes para manter isolamento
-    await prisma.user.deleteMany();
+    // await prisma.user.deleteMany();
   });
 
   it('creates a user successfully (201)', async () => {
