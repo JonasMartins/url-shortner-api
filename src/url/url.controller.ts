@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
-  InternalServerErrorException,
+  HttpCode,
+  Param,
   Post,
   Query,
 } from '@nestjs/common';
@@ -32,10 +34,15 @@ export class UrlController {
 
   @Post('shorten/')
   async shorten(@Body() data: ShortenDTO, @AuthUser() user: UserJWTPayload) {
-    const result = await this.urlService.shortenUrl(data.url, user.userId);
-    if (result.error) {
-      throw new InternalServerErrorException(result.error);
-    }
-    return result;
+    return await this.urlService.shortenUrl(data.url, user.userId);
+  }
+
+  @Delete('my-urls/:shortCode')
+  @HttpCode(204)
+  async delete(
+    @AuthUser() user: UserJWTPayload,
+    @Param('shortCode') shortCode: string,
+  ) {
+    await this.urlService.deleteUrl(shortCode, user.userId);
   }
 }

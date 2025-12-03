@@ -1,11 +1,35 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Prisma } from '../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { ShortenResponseDTO } from './dto/url.dto';
 
 @Injectable()
 export class UrlService {
   constructor(private prisma: PrismaService) {}
+
+  async deleteUrl(shortCode: string, userId: number) {
+    const url = await this.prisma.url.findUnique({
+      where: { shortCode },
+      select: { id: true, userId: true },
+    });
+
+    if (!url) {
+      throw new NotFoundException('URL not found');
+    }
+
+    if (url.userId !== userId) {
+      throw new UnauthorizedException('User not authorized to delete this URL');
+    }
+
+    await this.prisma.url.update({
+      where: { id: url.id },
+      data: { deletedAt: new Date() },
+    });
+  }
 
   async myUrls(
     userId: number,
@@ -41,10 +65,7 @@ export class UrlService {
     return { totalItems, totalPages, currentPage, perPage: finalTake, items };
   }
 
-  async shortenUrl(
-    originalUrl: string,
-    userId: number,
-  ): Promise<ShortenResponseDTO> {
+  async shortenUrl(originalUrl: string, userId: number) {
     let shortCode = this.generateShortCode();
     let attempts = 20;
     let existingCode: { shortCode: string } | null = null;
@@ -66,7 +87,7 @@ export class UrlService {
       break;
     }
     if (!attempts) {
-      return { shortUrl: '', error: 'Unable to generate a new slug' };
+      throw new InternalServerErrorException('Unable to generate a new slug');
     }
     const result = await this.prisma.url.create({
       data: {
@@ -76,7 +97,7 @@ export class UrlService {
       },
     });
     if (!result.id) {
-      return { shortUrl: '', error: 'Failed to shorten URL' };
+      throw new InternalServerErrorException('Failed to shorten URL');
     }
     return { shortUrl: shortCode };
   }
