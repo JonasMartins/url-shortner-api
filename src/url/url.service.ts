@@ -1,10 +1,45 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { ShortenResponseDTO } from './dto/url.dto';
 
 @Injectable()
 export class UrlService {
   constructor(private prisma: PrismaService) {}
+
+  async myUrls(
+    userId: number,
+    params: {
+      skip?: number;
+      take?: number;
+      orderBy?: Prisma.UrlOrderByWithRelationInput;
+    },
+  ) {
+    const { skip, take, orderBy } = params;
+    const page = Math.max(1, take);
+    const finalTake = Math.max(1, Math.min(100, page));
+    const finalSkip = (skip - 1) * finalTake;
+    const where = {
+      userId,
+      deletedAt: null,
+    };
+    const [totalItems, items] = await this.prisma.$transaction([
+      this.prisma.url.count({ where }),
+      this.prisma.url.findMany({
+        where,
+        omit: {
+          deletedAt: true,
+          updatedAt: true,
+        },
+        skip: finalSkip,
+        take: finalTake,
+        orderBy,
+      }),
+    ]);
+    const totalPages = totalItems === 0 ? 0 : Math.ceil(totalItems / finalTake);
+    const currentPage = totalPages === 0 ? 1 : Math.min(page, totalPages);
+    return { totalItems, totalPages, currentPage, perPage: finalTake, items };
+  }
 
   async shortenUrl(
     originalUrl: string,

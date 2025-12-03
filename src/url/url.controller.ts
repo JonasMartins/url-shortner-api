@@ -1,12 +1,13 @@
 import {
   Body,
   Controller,
+  Get,
   InternalServerErrorException,
   Post,
-  UnauthorizedException,
+  Query,
 } from '@nestjs/common';
 import { UserJWTPayload } from 'src/common/types/general.type';
-import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { AuthUser } from '../common/decorators/current-user.decorator';
 import { ShortenDTO } from './dto/url.dto';
 import { UrlService } from './url.service';
 
@@ -14,14 +15,23 @@ import { UrlService } from './url.service';
 export class UrlController {
   constructor(private urlService: UrlService) {}
 
-  @Post('shorten/')
-  async shorten(
-    @Body() data: ShortenDTO,
-    @CurrentUser() user?: UserJWTPayload,
+  @Get('my-urls')
+  async myUrls(
+    @AuthUser() user: UserJWTPayload,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
   ) {
-    if (!user) {
-      throw new UnauthorizedException('User must be logged in to shorten URLs');
-    }
+    return this.urlService.myUrls(user.userId, {
+      take: limit || 10,
+      skip: page || 1,
+      orderBy: {
+        id: 'desc',
+      },
+    });
+  }
+
+  @Post('shorten/')
+  async shorten(@Body() data: ShortenDTO, @AuthUser() user: UserJWTPayload) {
     const result = await this.urlService.shortenUrl(data.url, user.userId);
     if (result.error) {
       throw new InternalServerErrorException(result.error);

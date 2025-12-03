@@ -35,7 +35,7 @@ export type UrlAvgAggregateOutputType = {
 export type UrlSumAggregateOutputType = {
   id: number | null
   userId: number | null
-  accessCount: bigint | null
+  accessCount: number | null
 }
 
 export type UrlMinAggregateOutputType = {
@@ -46,7 +46,7 @@ export type UrlMinAggregateOutputType = {
   updatedAt: Date | null
   deletedAt: Date | null
   userId: number | null
-  accessCount: bigint | null
+  accessCount: number | null
 }
 
 export type UrlMaxAggregateOutputType = {
@@ -57,7 +57,7 @@ export type UrlMaxAggregateOutputType = {
   updatedAt: Date | null
   deletedAt: Date | null
   userId: number | null
-  accessCount: bigint | null
+  accessCount: number | null
 }
 
 export type UrlCountAggregateOutputType = {
@@ -211,9 +211,9 @@ export type UrlGroupByOutputType = {
   shortCode: string
   createdAt: Date
   updatedAt: Date
-  deletedAt: Date
+  deletedAt: Date | null
   userId: number
-  accessCount: bigint
+  accessCount: number
   _count: UrlCountAggregateOutputType | null
   _avg: UrlAvgAggregateOutputType | null
   _sum: UrlSumAggregateOutputType | null
@@ -245,9 +245,9 @@ export type UrlWhereInput = {
   shortCode?: Prisma.StringFilter<"Url"> | string
   createdAt?: Prisma.DateTimeFilter<"Url"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Url"> | Date | string
-  deletedAt?: Prisma.DateTimeFilter<"Url"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Url"> | Date | string | null
   userId?: Prisma.IntFilter<"Url"> | number
-  accessCount?: Prisma.BigIntFilter<"Url"> | bigint | number
+  accessCount?: Prisma.IntFilter<"Url"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -257,7 +257,7 @@ export type UrlOrderByWithRelationInput = {
   shortCode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  deletedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   accessCount?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -272,9 +272,9 @@ export type UrlWhereUniqueInput = Prisma.AtLeast<{
   originalUrl?: Prisma.StringFilter<"Url"> | string
   createdAt?: Prisma.DateTimeFilter<"Url"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Url"> | Date | string
-  deletedAt?: Prisma.DateTimeFilter<"Url"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Url"> | Date | string | null
   userId?: Prisma.IntFilter<"Url"> | number
-  accessCount?: Prisma.BigIntFilter<"Url"> | bigint | number
+  accessCount?: Prisma.IntFilter<"Url"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "shortCode">
 
@@ -284,7 +284,7 @@ export type UrlOrderByWithAggregationInput = {
   shortCode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  deletedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   accessCount?: Prisma.SortOrder
   _count?: Prisma.UrlCountOrderByAggregateInput
@@ -303,9 +303,9 @@ export type UrlScalarWhereWithAggregatesInput = {
   shortCode?: Prisma.StringWithAggregatesFilter<"Url"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Url"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Url"> | Date | string
-  deletedAt?: Prisma.DateTimeWithAggregatesFilter<"Url"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Url"> | Date | string | null
   userId?: Prisma.IntWithAggregatesFilter<"Url"> | number
-  accessCount?: Prisma.BigIntWithAggregatesFilter<"Url"> | bigint | number
+  accessCount?: Prisma.IntWithAggregatesFilter<"Url"> | number
 }
 
 export type UrlCreateInput = {
@@ -313,8 +313,8 @@ export type UrlCreateInput = {
   shortCode: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  deletedAt?: Date | string
-  accessCount?: bigint | number
+  deletedAt?: Date | string | null
+  accessCount?: number
   user: Prisma.UserCreateNestedOneWithoutUrlsInput
 }
 
@@ -324,9 +324,9 @@ export type UrlUncheckedCreateInput = {
   shortCode: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  deletedAt?: Date | string
+  deletedAt?: Date | string | null
   userId: number
-  accessCount?: bigint | number
+  accessCount?: number
 }
 
 export type UrlUpdateInput = {
@@ -334,8 +334,8 @@ export type UrlUpdateInput = {
   shortCode?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accessCount?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  accessCount?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutUrlsNestedInput
 }
 
@@ -345,9 +345,9 @@ export type UrlUncheckedUpdateInput = {
   shortCode?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   userId?: Prisma.IntFieldUpdateOperationsInput | number
-  accessCount?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  accessCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type UrlCreateManyInput = {
@@ -356,9 +356,9 @@ export type UrlCreateManyInput = {
   shortCode: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  deletedAt?: Date | string
+  deletedAt?: Date | string | null
   userId: number
-  accessCount?: bigint | number
+  accessCount?: number
 }
 
 export type UrlUpdateManyMutationInput = {
@@ -366,8 +366,8 @@ export type UrlUpdateManyMutationInput = {
   shortCode?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accessCount?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  accessCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type UrlUncheckedUpdateManyInput = {
@@ -376,9 +376,9 @@ export type UrlUncheckedUpdateManyInput = {
   shortCode?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   userId?: Prisma.IntFieldUpdateOperationsInput | number
-  accessCount?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  accessCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type UrlListRelationFilter = {
@@ -482,12 +482,8 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
-export type BigIntFieldUpdateOperationsInput = {
-  set?: bigint | number
-  increment?: bigint | number
-  decrement?: bigint | number
-  multiply?: bigint | number
-  divide?: bigint | number
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type UrlCreateWithoutUserInput = {
@@ -495,8 +491,8 @@ export type UrlCreateWithoutUserInput = {
   shortCode: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  deletedAt?: Date | string
-  accessCount?: bigint | number
+  deletedAt?: Date | string | null
+  accessCount?: number
 }
 
 export type UrlUncheckedCreateWithoutUserInput = {
@@ -505,8 +501,8 @@ export type UrlUncheckedCreateWithoutUserInput = {
   shortCode: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  deletedAt?: Date | string
-  accessCount?: bigint | number
+  deletedAt?: Date | string | null
+  accessCount?: number
 }
 
 export type UrlCreateOrConnectWithoutUserInput = {
@@ -544,9 +540,9 @@ export type UrlScalarWhereInput = {
   shortCode?: Prisma.StringFilter<"Url"> | string
   createdAt?: Prisma.DateTimeFilter<"Url"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Url"> | Date | string
-  deletedAt?: Prisma.DateTimeFilter<"Url"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Url"> | Date | string | null
   userId?: Prisma.IntFilter<"Url"> | number
-  accessCount?: Prisma.BigIntFilter<"Url"> | bigint | number
+  accessCount?: Prisma.IntFilter<"Url"> | number
 }
 
 export type UrlCreateManyUserInput = {
@@ -555,8 +551,8 @@ export type UrlCreateManyUserInput = {
   shortCode: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  deletedAt?: Date | string
-  accessCount?: bigint | number
+  deletedAt?: Date | string | null
+  accessCount?: number
 }
 
 export type UrlUpdateWithoutUserInput = {
@@ -564,8 +560,8 @@ export type UrlUpdateWithoutUserInput = {
   shortCode?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accessCount?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  accessCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type UrlUncheckedUpdateWithoutUserInput = {
@@ -574,8 +570,8 @@ export type UrlUncheckedUpdateWithoutUserInput = {
   shortCode?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accessCount?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  accessCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type UrlUncheckedUpdateManyWithoutUserInput = {
@@ -584,8 +580,8 @@ export type UrlUncheckedUpdateManyWithoutUserInput = {
   shortCode?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accessCount?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  accessCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -659,9 +655,9 @@ export type $UrlPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     shortCode: string
     createdAt: Date
     updatedAt: Date
-    deletedAt: Date
+    deletedAt: Date | null
     userId: number
-    accessCount: bigint
+    accessCount: number
   }, ExtArgs["result"]["url"]>
   composites: {}
 }
@@ -1093,7 +1089,7 @@ export interface UrlFieldRefs {
   readonly updatedAt: Prisma.FieldRef<"Url", 'DateTime'>
   readonly deletedAt: Prisma.FieldRef<"Url", 'DateTime'>
   readonly userId: Prisma.FieldRef<"Url", 'Int'>
-  readonly accessCount: Prisma.FieldRef<"Url", 'BigInt'>
+  readonly accessCount: Prisma.FieldRef<"Url", 'Int'>
 }
     
 
