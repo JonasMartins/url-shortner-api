@@ -13,10 +13,22 @@ async function bootstrap() {
     }),
   );
   const config = new DocumentBuilder()
-    .setTitle('Nome da sua API')
-    .setDescription('Descrição da API')
+    .setTitle('Encurtador de URL API')
+    .setDescription(
+      'Possiblita cadastro de usuários, autenticação, encurtar URLs, atualizar, listar e deletar',
+    )
     .setVersion('1.0')
-    .addBearerAuth() // Se usar autenticação JWT
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'JWT-auth',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

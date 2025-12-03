@@ -13,6 +13,7 @@ import {
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiParam,
   ApiQuery,
   ApiResponse,
   ApiTags,
@@ -25,11 +26,10 @@ import { UrlService } from './url.service';
 
 @ApiTags('Urls')
 @Controller()
-@ApiBearerAuth()
 export class UrlController {
   constructor(private urlService: UrlService) {}
 
-  @Public()
+  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Retorna a lista de Urls do usuário' })
   @ApiResponse({
     status: 200,
@@ -63,17 +63,53 @@ export class UrlController {
   }
 
   @Public()
+  @ApiOperation({
+    summary: 'Redireciona para URL original a partir do código encurtado',
+  })
+  @ApiParam({
+    name: 'shortCode',
+    description: 'Código encurtado da URL',
+    type: String,
+    required: true,
+  })
+  @ApiResponse({
+    status: 302,
+    description:
+      'Redireciona para a URL original a partir do código encurtado e incrementa o contador de acessos',
+  })
   @Get(':shortCode')
   async short(@Param('shortCode') shortCode: string, @Res() res) {
     const url = await this.urlService.getByShortCode(shortCode);
     return res.status(302).redirect(url);
   }
 
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({
+    summary:
+      'Cria um código encurtado para a URL fornecida e associa ao usuário autenticado',
+  })
+  @ApiResponse({
+    status: 201,
+    description:
+      'Cria um novo código encurtado para a URL fornecida, e associa ao usuário autenticado',
+  })
+  @ApiResponse({ status: 400, description: 'URL inválida' })
   @Post('shorten/')
   async shorten(@Body() data: ShortenDTO, @AuthUser() user: UserJWTPayload) {
     return await this.urlService.shortenUrl(data.url, user.userId);
   }
 
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({
+    summary:
+      'Deleta o código encurtador impedindo que seja listado como link válido',
+  })
+  @ApiResponse({
+    status: 204,
+    description: 'URL deletado com sucesso',
+  })
+  @ApiResponse({ status: 404, description: 'URL não encontrada' })
+  @ApiResponse({ status: 401, description: 'Acesso negado' })
   @Delete('my-urls/:shortCode')
   @HttpCode(204)
   async delete(
@@ -83,6 +119,17 @@ export class UrlController {
     await this.urlService.deleteUrl(shortCode, user.userId);
   }
 
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({
+    summary:
+      'Atualiza o código encurtado para um novo código fornecido pelo usuário',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'URL atualizada com sucesso',
+  })
+  @ApiResponse({ status: 404, description: 'URL não encontrada' })
+  @ApiResponse({ status: 401, description: 'Acesso negado' })
   @Put('my-urls/:shortCode')
   async update(
     @AuthUser() user: UserJWTPayload,

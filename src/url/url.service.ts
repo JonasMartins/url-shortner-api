@@ -6,6 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
+import { generateRandomString } from '../common/utils/general.utils';
 import { Prisma } from '../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -60,10 +61,10 @@ export class UrlService {
     if (url.userId !== userId) {
       throw new UnauthorizedException('User not authorized to delete this URL');
     }
-
+    const deletedRandomCode = generateRandomString(30);
     await this.prisma.url.update({
       where: { id: url.id },
-      data: { deletedAt: new Date() },
+      data: { shortCode: deletedRandomCode, deletedAt: new Date() },
     });
 
     return { shortUrl: `${process.env.ROOT_URL}/${shortCode}` };
