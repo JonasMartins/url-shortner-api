@@ -20,13 +20,6 @@ import { UrlService } from './url.service';
 export class UrlController {
   constructor(private urlService: UrlService) {}
 
-  @Public()
-  @Get(':shortCode')
-  async short(@Param('shortCode') shortCode: string, @Res() res) {
-    const url = await this.urlService.getByShortCode(shortCode);
-    return res.status(302).redirect(url);
-  }
-
   @Get('my-urls')
   async myUrls(
     @AuthUser() user: UserJWTPayload,
@@ -40,6 +33,13 @@ export class UrlController {
         id: 'desc',
       },
     });
+  }
+
+  @Public()
+  @Get(':shortCode')
+  async short(@Param('shortCode') shortCode: string, @Res() res) {
+    const url = await this.urlService.getByShortCode(shortCode);
+    return res.status(302).redirect(url);
   }
 
   @Post('shorten/')
