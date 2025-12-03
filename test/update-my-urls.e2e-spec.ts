@@ -4,6 +4,8 @@ import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { generateRandomString } from '../src/common/utils/general.utils';
 
+jest.setTimeout(60000);
+
 describe('Delete My URLs (e2e) - UPDATE /my-urls/:shortCode', () => {
   let app: INestApplication;
 
@@ -96,7 +98,7 @@ describe('Delete My URLs (e2e) - UPDATE /my-urls/:shortCode', () => {
       .expect(401);
   });
 
-  it('criador atualiza com sucesso (204) e short link antigo não aparece em /my-urls', async () => {
+  it('criador atualiza com sucesso (200) e short link antigo não aparece em /my-urls', async () => {
     const creator = await createAndLogin('creator3');
     const shortCode = await createShort(creator.token);
     const parts = shortCode.split('/');
@@ -109,13 +111,11 @@ describe('Delete My URLs (e2e) - UPDATE /my-urls/:shortCode', () => {
       .send(payload)
       .expect(200);
 
-    // buscar my-urls para o criador e garantir que o shortCode não existe
     const res = await request(app.getHttpServer())
       .get('/my-urls')
       .set('Authorization', `Bearer ${creator.token}`)
       .expect(200);
 
-    // espera que nenhum item tenha o shortCode deletado
     const items = Array.isArray(res.body.items) ? res.body.items : [];
     const exists = items.some((it) => it.shortCode === shortCode);
     expect(exists).toBe(false);

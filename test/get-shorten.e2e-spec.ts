@@ -6,7 +6,7 @@ import { generateRandomString } from '../src/common/utils/general.utils';
 
 jest.setTimeout(60000);
 
-describe('Delete My URLs (e2e) - DELETE /my-urls/:shortCode', () => {
+describe('Auth (e2e) - GET /:short', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -59,52 +59,40 @@ describe('Delete My URLs (e2e) - DELETE /my-urls/:shortCode', () => {
     return res.body.shortUrl as string;
   }
 
-  it('retorna 401 quando token ausente ao deletar', async () => {
-    // criar usuário e link
+  it('retorna 404 para um link não encontrado', async () => {
+    const notFound = generateRandomString(10);
+    await request(app.getHttpServer()).get(`/${notFound}`).expect(404);
+  });
+
+  it('retorna 302 para um link recem criado e compara o aumento do acesso', async () => {
     const { token } = await createAndLogin('creator');
     const shortCode = await createShort(token);
     const parts = shortCode.split('/');
 
-    // tentar deletar sem token
-    await request(app.getHttpServer())
-      .delete(`/my-urls/${parts[parts.length - 1]}`)
-      .expect(401);
-  });
-
-  it('apenas criador pode deletar, outro usuário recebe 401', async () => {
-    const creator = await createAndLogin('creator2');
-    const other = await createAndLogin('other');
-
-    const shortCode = await createShort(creator.token);
-    const parts = shortCode.split('/');
-
-    // tentativa de deleção por outro usuário
-    await request(app.getHttpServer())
-      .delete(`/my-urls/${parts[parts.length - 1]}`)
-      .set('Authorization', `Bearer ${other.token}`)
-      .expect(401);
-  });
-
-  it('criador deleta com sucesso (204) e link não aparece em /my-urls', async () => {
-    const creator = await createAndLogin('creator3');
-    const shortCode = await createShort(creator.token);
-    const parts = shortCode.split('/');
-
-    // deletar com sucesso
-    await request(app.getHttpServer())
-      .delete(`/my-urls/${parts[parts.length - 1]}`)
-      .set('Authorization', `Bearer ${creator.token}`)
-      .expect(204);
-
-    // buscar my-urls para o criador e garantir que o shortCode não existe
-    const res = await request(app.getHttpServer())
+    let res = await request(app.getHttpServer())
       .get('/my-urls')
-      .set('Authorization', `Bearer ${creator.token}`)
+      .set('Authorization', `Bearer ${token}`)
       .expect(200);
 
-    // espera que nenhum item tenha o shortCode deletado
-    const items = Array.isArray(res.body.items) ? res.body.items : [];
-    const exists = items.some((it) => it.shortCode === shortCode);
-    expect(exists).toBe(false);
-  });
+    let items = Array.isArray(res.body.items) ? res.body.items : [];
+    let shortLink = items.find(
+      (it) => it.shortCode === parts[parts.length - 1],
+    );
+    expect(shortLink).toBeDefined();
+    expect(shortLink.accessCount).toBe(0);
+
+    await request(app.getHttpServer())
+      .get(`/${parts[parts.length - 1]}`)
+      .expect(302);
+
+    res = await request(app.getHttpServer())
+      .get('/my-urls')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+
+    items = Array.isArray(res.body.items) ? res.body.items : [];
+    shortLink = items.find((it) => it.shortCode === parts[parts.length - 1]);
+    expect(shortLink).toBeDefined();
+    expect(shortLink.accessCount).toBe(1);
+  }, 10000);
 });
