@@ -1,15 +1,51 @@
 import {
+  ConflictException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 import { Prisma } from '../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class UrlService {
   constructor(private prisma: PrismaService) {}
+
+  async updateUrl(shortCode: string, newSlug: string, userId: number) {
+    const url = await this.prisma.url.findUnique({
+      where: { shortCode, deletedAt: null },
+      select: { id: true, userId: true },
+    });
+
+    if (!url) {
+      throw new NotFoundException('URL não encontrada');
+    }
+
+    if (url.userId !== userId) {
+      throw new UnauthorizedException(
+        'Usuário não autorizado a atualizar esta URL',
+      );
+    }
+
+    try {
+      await this.prisma.url.update({
+        where: { id: url.id },
+        data: { shortCode: newSlug },
+      });
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === 'P2002') {
+          // slug deve ser único
+          throw new ConflictException('slug já existente');
+        }
+      }
+      throw new InternalServerErrorException('Erro ao atualizar slug');
+    }
+
+    return { shortUrl: newSlug };
+  }
 
   async deleteUrl(shortCode: string, userId: number) {
     const url = await this.prisma.url.findUnique({
@@ -29,6 +65,8 @@ export class UrlService {
       where: { id: url.id },
       data: { deletedAt: new Date() },
     });
+
+    return { shortUrl: shortCode };
   }
 
   async myUrls(

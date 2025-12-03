@@ -6,11 +6,12 @@ import {
   HttpCode,
   Param,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { UserJWTPayload } from 'src/common/types/general.type';
 import { AuthUser } from '../common/decorators/current-user.decorator';
-import { ShortenDTO } from './dto/url.dto';
+import { ShortenDTO, UpdateShortenDTO } from './dto/url.dto';
 import { UrlService } from './url.service';
 
 @Controller()
@@ -44,5 +45,14 @@ export class UrlController {
     @Param('shortCode') shortCode: string,
   ) {
     await this.urlService.deleteUrl(shortCode, user.userId);
+  }
+
+  @Put('my-urls/:shortCode')
+  async update(
+    @AuthUser() user: UserJWTPayload,
+    @Param('shortCode') shortCode: string,
+    @Body() body: UpdateShortenDTO,
+  ) {
+    await this.urlService.updateUrl(shortCode, body.url, user.userId);
   }
 }
