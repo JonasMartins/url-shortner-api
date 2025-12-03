@@ -5,8 +5,8 @@
 Para fazer a interface com o banco foi utilizado a ORM prisma, seguindo a configuração
 básica especificada pelo NestJS.
 
-source: [Nest](https://docs.nestjs.com/recipes/prisma#set-up-prisma)<br/>
-source: [Prisma](https://www.prisma.io/docs/getting-started/prisma-orm/quickstart/postgresql)
+source: [Nest tutorial](https://docs.nestjs.com/recipes/prisma#set-up-prisma)<br/>
+source: [Prisma tutorial](https://www.prisma.io/docs/getting-started/prisma-orm/quickstart/postgresql)
 
 ```ts
 //src/prisma/schema.prisma
