@@ -1,18 +1,25 @@
 import {
   ConflictException,
+  Inject,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { Logger } from 'winston';
 import { generateRandomString } from '../common/utils/general.utils';
 import { Prisma } from '../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class UrlService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    @Inject(WINSTON_MODULE_NEST_PROVIDER)
+    private readonly logger: Logger,
+  ) {}
 
   async updateUrl(shortCode: string, newSlug: string, userId: number) {
     const url = await this.prisma.url.findUnique({
@@ -55,16 +62,25 @@ export class UrlService {
     });
 
     if (!url) {
-      throw new NotFoundException('URL not found');
+      throw new NotFoundException('URL não encontrada');
     }
 
     if (url.userId !== userId) {
-      throw new UnauthorizedException('User not authorized to delete this URL');
+      throw new UnauthorizedException(
+        'Usuário sem permissão para deletar esta URL',
+      );
     }
     const deletedRandomCode = generateRandomString(30);
     await this.prisma.url.update({
       where: { id: url.id },
       data: { shortCode: deletedRandomCode, deletedAt: new Date() },
+    });
+
+    this.logger.info('Delete URL', {
+      context: 'URLService',
+      deletedCode: shortCode,
+      timestamp: new Date().toISOString(),
+      action: 'DELETE_URL',
     });
 
     return { shortUrl: `${process.env.ROOT_URL}/${shortCode}` };
@@ -82,6 +98,13 @@ export class UrlService {
     await this.prisma.url.update({
       where: { shortCode },
       data: { accessCount: { increment: 1 } },
+    });
+
+    this.logger.info('Access URL', {
+      context: 'URLService',
+      shortCode,
+      timestamp: new Date().toISOString(),
+      action: 'ACCESS_URL',
     });
 
     return result.originalUrl;
@@ -143,7 +166,13 @@ export class UrlService {
       break;
     }
     if (!attempts) {
-      throw new InternalServerErrorException('Unable to generate a new slug');
+      this.logger.error('Shorten URL', {
+        context: 'URLService',
+        msg: 'Incapaz de gerar um novo slug',
+        timestamp: new Date().toISOString(),
+        action: 'SHORTEN_URL',
+      });
+      throw new InternalServerErrorException('Incapaz de gerar um novo slug');
     }
     const result = await this.prisma.url.create({
       data: {
@@ -153,9 +182,21 @@ export class UrlService {
       },
     });
     if (!result.id) {
-      throw new InternalServerErrorException('Failed to shorten URL');
+      this.logger.error('Shorten URL', {
+        context: 'URLService',
+        msg: 'Erro ao encurtar a URL',
+        timestamp: new Date().toISOString(),
+        action: 'SHORTEN_URL',
+      });
+      throw new InternalServerErrorException('Erro ao encurtar a URL');
     }
 
+    this.logger.info('Shorten URL', {
+      context: 'URLService',
+      shortCode,
+      timestamp: new Date().toISOString(),
+      action: 'SHORTEN_URL',
+    });
     return { shortUrl: `${process.env.ROOT_URL}/${shortCode}` };
   }
 
