@@ -211,3 +211,10 @@ de todos os testes, a imagem é removida da máquina.
 ## 5. Resultado
 
 <img src="../images/e2e.png" alt="tests">
+
+## 6. Comandos úteis
+
+```sh
+npm run test:e2e
+npm run test:e2e -- --runTestsByPath test/delete-my-urls.e2e-spec.ts
+```
