@@ -5,18 +5,17 @@ criação, deleção, atualização e busca de links acossiados a um usuário, a
 para a URL original usando um código válido e previamente cadastrado. 
 
 
-## Documentação detalhada e explicada do projeto. 
+## Documentação detalhada e explicação do projeto. 
 
 [1.AUTENTICAÇÃO](docs/AUTH.md)<br />
 [2.DEPLOY](docs/DEPLOY.md)<br />
 [3.LOCAL](docs/LOCAL.md)<br />
 [4.LOGGER](docs/LOGGER.md)<br />
-[5.DEPLOY](docs/DEPLOY.md)<br />
-[6.SWAGGER](docs/OPEN_API.md)<br />
-[7.ORM](docs/ORM.md)<br />
-[8.REQUIREMENTS](docs/REQUIREMENTS.md)<br />
-[9.TESTS](docs/TESTS.md)<br />
-[10.TREE](docs/TREE.md)<br />
+[5.SWAGGER](docs/OPEN_API.md)<br />
+[6.ORM](docs/ORM.md)<br />
+[7.REQUIREMENTS](docs/REQUIREMENTS.md)<br />
+[8.TESTS](docs/TESTS.md)<br />
+[9.TREE](docs/TREE.md)<br />
 
 
 ## Tecnologias usadas
@@ -31,3 +30,11 @@ para a URL original usando um código válido e previamente cadastrado.
 8. PRISMA ORM
 9. SWAGGER
 10. WINSTON LOGGER
+
+## Extras que não entraram na versão
+
+* KUBERNETES
+* CI/CD
+* OBSERVABILIDADE
+* INFRAESTRUTURA COMO CÓDIGO
+* HTTPS
