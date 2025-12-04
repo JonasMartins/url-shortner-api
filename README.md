@@ -16,7 +16,7 @@ para a URL original usando um código válido e previamente cadastrado.
 [6.ORM](docs/ORM.md)<br />
 [7.REQUIREMENTS](docs/REQUIREMENTS.md)<br />
 [8.TESTS](docs/TESTS.md)<br />
-[9.OBSERVABILIDADE](docs/OBSERVABILIDADE.md)<br />
+[9.OBSERVABILIDADE](docs/OBSERVABILITY.md)<br />
 [10.ESCALABILIDADE](docs/SCALABILITY.md)<br />
 [11.TREE](docs/TREE.md)<br />
 
