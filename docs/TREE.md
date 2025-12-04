@@ -17,14 +17,17 @@
 │   ├── 📝 DEPLOY.md
 │   ├── 📝 LOCAL.md
 │   ├── 📝 LOGGER.md
+│   ├── 📝 OBSERVABILITY.md
 │   ├── 📝 OPEN_API.md
 │   ├── 📝 ORM.md
 │   ├── 📝 REQUIREMENTS.md
+│   ├── 📝 SCALABILITY.md
 │   ├── 📝 TESTS.md
 │   └── 📝 TREE.md
 ├── 📁 images
 │   ├── 🖼️ aws.png
 │   ├── 🖼️ db.png
+│   ├── 🖼️ diagram.png
 │   ├── 🖼️ docker-local.png
 │   ├── 🖼️ e2e.png
 │   ├── 🖼️ prod.png
