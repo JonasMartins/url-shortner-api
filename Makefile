@@ -22,6 +22,10 @@ start-db:
 up-dev:
 	@ echo "Up project in development mode in docker"
 	@ docker compose -f docker/url-shortner-dev/docker-compose.yml up -d --build
+
+up:
+	@ echo "Up project in production mode in docker"
+	@ docker compose -f docker/url-shortner-prod/docker-compose.yml up -d --build
 #===================##===================##===================##===================##===================##===================##===================##===================#
 #====== LOCAL ======##====== LOCAL ======##====== LOCAL ======##====== LOCAL ======##====== LOCAL ======##====== LOCAL ======##====== LOCAL ======##====== LOCAL ======#
 #===================##===================##===================##===================##===================##===================##===================##===================#
