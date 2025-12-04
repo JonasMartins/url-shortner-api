@@ -46,8 +46,8 @@ COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 COPY --from=builder /app/dist ./dist
 
 # Copy scripts
-COPY wait-for.sh start.sh ./
-RUN chmod +x wait-for.sh start.sh
+COPY wait-for.sh start-prod.sh ./
+RUN chmod +x wait-for.sh start-prod.sh
 
 # Change ownership
 RUN chown -R nestjs:nodejs /app
@@ -62,4 +62,4 @@ EXPOSE 3000
 ENTRYPOINT ["dumb-init", "--"]
 
 # Start the application
-CMD ["./start.sh"]
+CMD ["./start-prod.sh"]

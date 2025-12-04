@@ -1,6 +1,6 @@
 services:
   reverse-proxy:
-    container_name: nest_url_shortner-reverse-proxy
+    container_name: nest_url_shortner-reverse-proxy-prod
     image: nginx:latest
     depends_on:
       - app
@@ -12,13 +12,13 @@ services:
       - dev
 
   app:
-    container_name: nest-url-shortner-app
+    container_name: nest-url-shortner-app-prod
     build:
       context: ../../
       dockerfile: docker/url-shortner-prod/Dockerfile
     restart: always
     env_file:
-    - .env 
+    - ../../.env 
     networks:
       - dev
 
