@@ -1,103 +1,123 @@
 # Shorten URL API - TREE
 
-**Generated:** 12/3/2025, 8:22:14 PM
-**Root Path:** `/Users/jonasmartins/Documents/dev/node/nest-url-shortner`
-
 ```
-├── docs
-│   ├── AUTH.md
-│   ├── DEPLOY.md
-│   ├── ORM.md
-│   └── tests.txt
-├── prisma
-│   ├── migrations
-│   │   ├── 20251202150906_init
-│   │   │   └── migration.sql
-│   │   ├── 20251202195535_varchar
-│   │   │   └── migration.sql
-│   │   ├── 20251202221525_url_enabled
-│   │   │   └── migration.sql
-│   │   ├── 20251202231844_url_access_count
-│   │   │   └── migration.sql
-│   │   ├── 20251202233332_url_deleted_at
-│   │   │   └── migration.sql
-│   │   ├── 20251202235305_url_text_original_url
-│   │   │   └── migration.sql
-│   │   ├── 20251203001831_url_access_back_to_int
-│   │   │   └── migration.sql
-│   │   ├── 20251203002411_removing_deleted_at_clause
-│   │   │   └── migration.sql
-│   │   └── migration_lock.toml
-│   └── schema.prisma
-├── src
-│   ├── auth
-│   │   ├── dto
-│   │   │   └── auth.dto.ts
-│   │   ├── auth.controller.ts
-│   │   ├── auth.module.ts
-│   │   ├── auth.service.ts
-│   │   ├── constants.ts
-│   │   ├── jwt-auth.guard.ts
-│   │   ├── jwt.strategy.ts
-│   │   ├── local-auth.guard.ts
-│   │   └── local.strategy.ts
-│   ├── common
-│   │   ├── decorators
-│   │   │   ├── current-user.decorator.ts
-│   │   │   └── public.decorator.ts
-│   │   ├── providers
-│   │   │   └── logger.provider.ts
-│   │   ├── types
-│   │   │   └── general.type.ts
-│   │   └── utils
-│   │       └── general.utils.ts
-│   ├── generated
-│   ├── prisma
-│   │   └── prisma.service.ts
-│   ├── url
-│   │   ├── dto
-│   │   │   └── url.dto.ts
-│   │   ├── url.controller.ts
-│   │   ├── url.module.ts
-│   │   └── url.service.ts
-│   ├── user
-│   │   ├── dto
-│   │   │   └── user.dto.ts
-│   │   ├── entities
-│   │   │   └── user.entity.ts
-│   │   ├── user.controller.ts
-│   │   ├── user.module.ts
-│   │   └── user.service.ts
-│   ├── app.controller.ts
-│   ├── app.module.ts
-│   ├── app.service.ts
-│   └── main.ts
-├── test
-│   ├── app.e2e-spec.ts
-│   ├── auth.e2e-spec.ts
-│   ├── delete-my-urls.e2e-spec.ts
-│   ├── get-my-urls.e2e-spec.ts
-│   ├── get-shorten.e2e-spec.ts
-│   ├── global-setup.ts
-│   ├── global-teardown.ts
-│   ├── jest-e2e.json
-│   ├── setup-after-env.ts
-│   ├── setup-e2e.ts
-│   ├── shorten.e2e-spec.ts
-│   ├── update-my-urls.e2e-spec.ts
-│   └── user.e2e-spec.ts
-├── .editorconfig
-├── .eslintrc.js
-├── .gitignore
-├── .prettierrc
-├── Makefile
-├── README.md
-├── docker-compose.yml
-├── nest-cli.json
-├── package-lock.json
-├── package.json
-├── prisma.config.ts
-└── tsconfig.json
+├── 📁 docker
+│   ├── 📁 url-shortner-dev
+│   │   ├── 🐳 Dockerfile
+│   │   └── ⚙️ docker-compose.yml
+│   └── 📁 url-shortner-prod
+│       ├── 📁 nginx
+│       │   └── ⚙️ nginx.conf
+│       ├── 🐳 Dockerfile
+│       └── ⚙️ docker-compose.yml
+├── 📁 docs
+│   ├── 📝 AUTH.md
+│   ├── 📝 DEPLOY.md
+│   ├── 📝 LOCAL.md
+│   ├── 📝 LOGGER.md
+│   ├── 📝 OPEN_API.md
+│   ├── 📝 ORM.md
+│   ├── 📝 TESTS.md
+│   └── 📝 TREE.md
+├── 📁 images
+│   ├── 🖼️ aws.png
+│   ├── 🖼️ db.png
+│   ├── 🖼️ docker-local.png
+│   ├── 🖼️ e2e.png
+│   └── 🖼️ swagger.png
+├── 📁 prisma
+│   ├── 📁 migrations
+│   │   ├── 📁 20251202150906_init
+│   │   │   └── 📄 migration.sql
+│   │   ├── 📁 20251202195535_varchar
+│   │   │   └── 📄 migration.sql
+│   │   ├── 📁 20251202221525_url_enabled
+│   │   │   └── 📄 migration.sql
+│   │   ├── 📁 20251202231844_url_access_count
+│   │   │   └── 📄 migration.sql
+│   │   ├── 📁 20251202233332_url_deleted_at
+│   │   │   └── 📄 migration.sql
+│   │   ├── 📁 20251202235305_url_text_original_url
+│   │   │   └── 📄 migration.sql
+│   │   ├── 📁 20251203001831_url_access_back_to_int
+│   │   │   └── 📄 migration.sql
+│   │   ├── 📁 20251203002411_removing_deleted_at_clause
+│   │   │   └── 📄 migration.sql
+│   │   └── ⚙️ migration_lock.toml
+│   └── 📄 schema.prisma
+├── 📁 src
+│   ├── 📁 auth
+│   │   ├── 📁 dto
+│   │   │   └── 📄 auth.dto.ts
+│   │   ├── 📄 auth.controller.ts
+│   │   ├── 📄 auth.module.ts
+│   │   ├── 📄 auth.service.ts
+│   │   ├── 📄 constants.ts
+│   │   ├── 📄 jwt-auth.guard.ts
+│   │   ├── 📄 jwt.strategy.ts
+│   │   ├── 📄 local-auth.guard.ts
+│   │   └── 📄 local.strategy.ts
+│   ├── 📁 common
+│   │   ├── 📁 decorators
+│   │   │   ├── 📄 current-user.decorator.ts
+│   │   │   └── 📄 public.decorator.ts
+│   │   ├── 📁 providers
+│   │   │   └── 📄 logger.provider.ts
+│   │   ├── 📁 types
+│   │   │   └── 📄 general.type.ts
+│   │   └── 📁 utils
+│   │       └── 📄 general.utils.ts
+│   ├── 📁 generated
+│   ├── 📁 prisma
+│   │   └── 📄 prisma.service.ts
+│   ├── 📁 url
+│   │   ├── 📁 dto
+│   │   │   └── 📄 url.dto.ts
+│   │   ├── 📄 url.controller.ts
+│   │   ├── 📄 url.module.ts
+│   │   └── 📄 url.service.ts
+│   ├── 📁 user
+│   │   ├── 📁 dto
+│   │   │   └── 📄 user.dto.ts
+│   │   ├── 📁 entities
+│   │   │   └── 📄 user.entity.ts
+│   │   ├── 📄 user.controller.ts
+│   │   ├── 📄 user.module.ts
+│   │   └── 📄 user.service.ts
+│   ├── 📄 app.controller.ts
+│   ├── 📄 app.module.ts
+│   ├── 📄 app.service.ts
+│   └── 📄 main.ts
+├── 📁 test
+│   ├── 📄 app.e2e-spec.ts
+│   ├── 📄 auth.e2e-spec.ts
+│   ├── 📄 delete-my-urls.e2e-spec.ts
+│   ├── 📄 get-my-urls.e2e-spec.ts
+│   ├── 📄 get-shorten.e2e-spec.ts
+│   ├── 📄 global-setup.ts
+│   ├── 📄 global-teardown.ts
+│   ├── ⚙️ jest-e2e.json
+│   ├── 📄 setup-after-env.ts
+│   ├── 📄 setup-e2e.ts
+│   ├── 📄 shorten.e2e-spec.ts
+│   ├── 📄 update-my-urls.e2e-spec.ts
+│   └── 📄 user.e2e-spec.ts
+├── ⚙️ .dockerignore
+├── ⚙️ .editorconfig
+├── ⚙️ .env.example
+├── 📄 .eslintrc.js
+├── ⚙️ .gitignore
+├── ⚙️ .prettierrc
+├── 📄 Makefile
+├── 📝 README.md
+├── ⚙️ nest-cli.json
+├── ⚙️ package-lock.json
+├── ⚙️ package.json
+├── 📄 prisma.config.ts
+├── 📄 start-prod.sh
+├── 📄 start.sh
+├── ⚙️ tsconfig.json
+└── 📄 wait-for.sh
 ```
 
 ---
