@@ -17,11 +17,11 @@ DONE_MESSAGE = "Finished Operation"
 
 start-db:
 	@ echo "Start DB"
-	@ docker compose -f docker-url-shortner/docker-compose.dev.yml up db -d
+	@ docker compose -f docker/url-shortner-dev/docker-compose.yml up db -d
 
 up-dev:
 	@ echo "Up project in development mode in docker"
-	@ docker compose -f docker-url-shortner/docker-compose.dev.yml up -d --build
+	@ docker compose -f docker/url-shortner-dev/docker-compose.yml up -d --build
 #===================##===================##===================##===================##===================##===================##===================##===================#
 #====== LOCAL ======##====== LOCAL ======##====== LOCAL ======##====== LOCAL ======##====== LOCAL ======##====== LOCAL ======##====== LOCAL ======##====== LOCAL ======#
 #===================##===================##===================##===================##===================##===================##===================##===================#

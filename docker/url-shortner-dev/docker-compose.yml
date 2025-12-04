@@ -1,0 +1,58 @@
+services:
+  reverse-proxy:
+    container_name: nest_url_shortner-reverse-proxy
+    image: nginx:latest
+    depends_on:
+      - app
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    networks:
+      - dev
+  db:
+    container_name: nest-url-shortner-db
+    image: postgres:15.3-alpine3.18
+    restart: always
+    environment:
+      - POSTGRES_DB=nest_url_shortner
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=ps_secret
+    ports:
+      - '5432:5432'
+    networks:
+      - dev
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    container_name: nest-url-shortner-app
+    build:
+      context: ../../
+      dockerfile: docker/url-shortner-dev/Dockerfile
+    restart: always
+    # ports:
+    #   - '3000:3000'
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=nest_url_shortner
+      - DB_USER=postgres
+      - DB_PASSWORD=ps_secret
+      - DATABASE_URL=postgresql://postgres:ps_secret@db:5432/nest_url_shortner?schema=public&connection_limit=5
+      - JWT_SECRET=qKZcBLBzTS4c4dQ8SI9I2JaTV1MtUfhu
+      - PORT=3000
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - dev
+
+networks:
+  dev:
+    driver: bridge
+    name: 'nest-url-shortner'
