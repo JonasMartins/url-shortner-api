@@ -1,5 +1,7 @@
 # Shorten URL API - ORM
 
+[HOME - README](../README.md)
+
 ## 1. Setup Inicial Prisma
 
 Para fazer a interface com o banco foi utilizado a ORM prisma, seguindo a configuração

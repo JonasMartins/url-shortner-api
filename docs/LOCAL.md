@@ -1,5 +1,7 @@
 # Shorten URL API - LOCAL
 
+[HOME - README](../README.md)
+
 ## 1. Setup Inicial (Apenas Docker)
 
 Para que a aplicação rode localmente é necessário ter o **Docker** e o **Docker compose** disponíveis na máquina. Após fazer o dowload,

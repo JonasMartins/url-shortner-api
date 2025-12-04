@@ -1,5 +1,7 @@
 # Shorten URL API - LOCAL
 
+[HOME - README](../README.md)
+
 ## 1. Setup Inicial AWS
 
 Para o deploy foi utilizado uma máquina __AWS EC2__, e a aplicação rodando no docker, o banco postgres foi usando o __supabase__ 

@@ -1,5 +1,7 @@
 # Shorten URL API - OPEN API
 
+[HOME - README](../README.md)
+
 ## 1. Setup Inicial Swagger
 
 Para a documentação da api, foi usado o swagger seguindo as boas práticas e os padrões

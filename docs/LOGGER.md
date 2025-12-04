@@ -1,5 +1,7 @@
 # Shorten URL API - LOGGER
 
+[HOME - README](../README.md)
+
 ## 1. Setup Inicial Winston
 
 Para a geração de logs, foi utilizado o winston para a apuração de logs e escrita em arquivos,

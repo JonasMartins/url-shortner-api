@@ -1,5 +1,7 @@
 # Shorten URL API - REQUIRIMENTS
 
+[HOME - README](../README.md)
+
 Explicação breve dos endpoints e algumas regras de negócio exigidas.
 
 ## 1. POST /user → ( Público )
