@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { Prisma } from '../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
@@ -21,6 +21,17 @@ export class UserService {
 
   async createUser(data: Prisma.UserCreateInput) {
     const hash = await this.generateHash(data.password, 10);
+    const result = await this.prisma.user.findFirst({
+      where: {
+        email: data.email,
+      },
+      select: {
+        id: true,
+      },
+    });
+    if (result?.id) {
+      throw new ConflictException('email já usado');
+    }
     return this.prisma.user.create({
       data: {
         email: data.email,
