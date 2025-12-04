@@ -9,6 +9,7 @@ import { PrismaClient } from '../src/generated/prisma/client';
 export class TestDatabase {
   private static container: StartedPostgreSqlContainer;
   private static prisma: PrismaClient;
+  private static migrationRun = false;
 
   static async setup(): Promise<string> {
     this.container = await new PostgreSqlContainer('postgres:15.3-alpine3.18')
@@ -20,15 +21,17 @@ export class TestDatabase {
     const databaseUrl = this.container.getConnectionUri();
     process.env.DATABASE_URL = databaseUrl;
 
-    // Executa as migrations
-    execSync('npx prisma migrate deploy', {
-      env: {
-        ...process.env,
-        DATABASE_URL: databaseUrl,
-      },
-      stdio: 'inherit',
-    });
-
+    if (!this.migrationRun) {
+      // Executa as migrations
+      execSync('npx prisma migrate deploy', {
+        env: {
+          ...process.env,
+          DATABASE_URL: databaseUrl,
+        },
+        stdio: 'inherit',
+      });
+      this.migrationRun = true;
+    }
     const adapter = new PrismaPg({
       connectionString: databaseUrl,
     });

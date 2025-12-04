@@ -5,6 +5,7 @@ import { PrismaClient } from '../generated/prisma/client';
 
 @Injectable()
 export class PrismaService extends PrismaClient {
+  private static migrationRun = false;
   constructor() {
     const adapter = new PrismaPg({
       connectionString: process.env.DATABASE_URL as string,
@@ -14,13 +15,16 @@ export class PrismaService extends PrismaClient {
 
   async onModuleInit() {
     try {
-      execSync('npx prisma migrate deploy', {
-        env: {
-          ...process.env,
-          DATABASE_URL: process.env.DATABASE_URL,
-        },
-        stdio: 'inherit',
-      });
+      if (!PrismaService.migrationRun) {
+        execSync('npx prisma migrate deploy', {
+          env: {
+            ...process.env,
+            DATABASE_URL: process.env.DATABASE_URL,
+          },
+          stdio: 'inherit',
+        });
+        PrismaService.migrationRun = true;
+      }
 
       await this.$connect();
       // console.log('✅ Database connected successfully');

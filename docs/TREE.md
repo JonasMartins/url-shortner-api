@@ -19,6 +19,7 @@
 │   ├── 📝 LOGGER.md
 │   ├── 📝 OPEN_API.md
 │   ├── 📝 ORM.md
+│   ├── 📝 REQUIREMENTS.md
 │   ├── 📝 TESTS.md
 │   └── 📝 TREE.md
 ├── 📁 images
@@ -26,6 +27,7 @@
 │   ├── 🖼️ db.png
 │   ├── 🖼️ docker-local.png
 │   ├── 🖼️ e2e.png
+│   ├── 🖼️ prod.png
 │   └── 🖼️ swagger.png
 ├── 📁 prisma
 │   ├── 📁 migrations
@@ -77,6 +79,7 @@
 │   │   │   └── 📄 url.dto.ts
 │   │   ├── 📄 url.controller.ts
 │   │   ├── 📄 url.module.ts
+│   │   ├── 📄 url.service.spec.ts
 │   │   └── 📄 url.service.ts
 │   ├── 📁 user
 │   │   ├── 📁 dto
@@ -85,6 +88,7 @@
 │   │   │   └── 📄 user.entity.ts
 │   │   ├── 📄 user.controller.ts
 │   │   ├── 📄 user.module.ts
+│   │   ├── 📄 user.service.spec.ts
 │   │   └── 📄 user.service.ts
 │   ├── 📄 app.controller.ts
 │   ├── 📄 app.module.ts

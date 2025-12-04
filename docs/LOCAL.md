@@ -44,11 +44,9 @@ o banco e a aplicação compilada usando nest build e nest start, é usando o sc
 que a aplicação aguarde o banco estar ativo para iniciar conexção e realizar as migrações. Wait-for é disponibilizado
 na própria documentação oficial do Postgres no docker hub.
 
-http://localhost:3000/api/docs __(OBS: a porta 3000 é usada apenas no ambiente dev, em produção Ngix é usado como proxy reverso expondo apenas a porta 80)__
-
+http://localhost:3000/api/docs **(OBS: a porta 3000 é usada apenas no ambiente dev, em produção Ngix é usado como proxy reverso expondo apenas a porta 80)**
 
 <img src="../images/docker-local.png" alt="docker local">
-
 
 ### 1.2 Usando apenas Docker compose
 
@@ -83,7 +81,15 @@ npm run dev
 4. Start no banco via docker
 5. npm run dev (esperar migração prisma finalizar, alguns segundos)
 
-
 Navegar para:
 
 http://localhost:3000/api/docs
+
+## 3. Tests
+
+Rodando localmente e apenas o banco no docker é possível rodar os testes, unitários e e2e
+
+```sh
+npm run test
+npm run test:e2e
+```

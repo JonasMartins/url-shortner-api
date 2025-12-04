@@ -220,3 +220,47 @@ de todos os testes, a imagem é removida da máquina.
 npm run test:e2e
 npm run test:e2e -- --runTestsByPath test/delete-my-urls.e2e-spec.ts
 ```
+
+## 7. Testes Unitários ( mocks )
+
+Testes unitários forma colocados nos serviços **user** e **url** e usam mocks para simular resultados sem ter acesso ao banco de verdade.
+
+```ts
+//src/url/url.service.spec.ts
+describe('updateUrl', () => {
+  it('atualiza e retorna a nova short', async () => {
+    prisma.url.findUnique.mockResolvedValue({ id: 1, userId: 1 });
+    prisma.url.update.mockResolvedValue({});
+
+    const res = await service.updateUrl('abc123', 'newslug', 1);
+    expect(prisma.url.findUnique).toHaveBeenCalledWith({
+      where: { shortCode: 'abc123', deletedAt: null },
+      select: { id: true, userId: true },
+    });
+    expect(prisma.url.update).toHaveBeenCalledWith({
+      where: { id: 1 },
+      data: { shortCode: 'newslug' },
+    });
+    expect(res).toEqual({ shortUrl: 'https://short.test/newslug' });
+  });
+
+  it('retorna not found quando não encontrado o slug', async () => {
+    prisma.url.findUnique.mockResolvedValue(null);
+    await expect(service.updateUrl('nope', 'slug', 1)).rejects.toThrow(
+      NotFoundException,
+    );
+  });
+
+  it('retorna unauthorized caso o usuário querendo altear não seja o dono da url', async () => {
+    prisma.url.findUnique.mockResolvedValue({ id: 1, userId: 999 });
+    await expect(service.updateUrl('abc', 'slug', 1)).rejects.toThrow(
+      UnauthorizedException,
+    );
+  });
+});
+```
+
+```sh
+npm run test
+npm run test --runTestsByPath ./src/url/url.service.spec.ts
+```
