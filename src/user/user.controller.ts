@@ -1,7 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from '../common/decorators/public.decorator';
-import { User as UserModel } from '../generated/prisma/client';
 import { CreateUserDTO } from './dto/user.dto';
 import { UserService } from './user.service';
 
@@ -18,7 +17,7 @@ export class UserController {
   })
   @ApiBody({ type: CreateUserDTO })
   @Post()
-  async create(@Body() data: CreateUserDTO): Promise<UserModel> {
+  async create(@Body() data: CreateUserDTO) {
     return this.userService.createUser(data);
   }
 }
