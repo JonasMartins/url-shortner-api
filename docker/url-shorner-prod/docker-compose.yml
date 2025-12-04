@@ -14,7 +14,7 @@ services:
   app:
     container_name: nest-url-shortner-app
     build:
-      context: ../
+      context: ../../
       dockerfile: docker/url-shortner-prod/Dockerfile
     restart: always
     env_file:
